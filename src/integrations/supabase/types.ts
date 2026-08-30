@@ -120,6 +120,126 @@ export type Database = {
           },
         ]
       }
+      customers: {
+        Row: {
+          address: string | null
+          branch_id: string | null
+          created_at: string
+          created_by: string | null
+          document_id: string | null
+          email: string | null
+          full_name: string
+          id: string
+          notes: string | null
+          phone: string | null
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          branch_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          document_id?: string | null
+          email?: string | null
+          full_name: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          branch_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          document_id?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customers_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customers_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      devices: {
+        Row: {
+          accessories: string | null
+          brand: string
+          color: string | null
+          created_at: string
+          customer_id: string
+          id: string
+          imei: string | null
+          model: string
+          serial_number: string | null
+          tenant_id: string
+          unlock_code: string | null
+          updated_at: string
+        }
+        Insert: {
+          accessories?: string | null
+          brand: string
+          color?: string | null
+          created_at?: string
+          customer_id: string
+          id?: string
+          imei?: string | null
+          model: string
+          serial_number?: string | null
+          tenant_id: string
+          unlock_code?: string | null
+          updated_at?: string
+        }
+        Update: {
+          accessories?: string | null
+          brand?: string
+          color?: string | null
+          created_at?: string
+          customer_id?: string
+          id?: string
+          imei?: string | null
+          model?: string
+          serial_number?: string | null
+          tenant_id?: string
+          unlock_code?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "devices_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "devices_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       permissions: {
         Row: {
           code: string
@@ -182,6 +302,152 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      repair_orders: {
+        Row: {
+          approved_at: string | null
+          assigned_to: string | null
+          branch_id: string | null
+          created_at: string
+          created_by: string | null
+          customer_id: string
+          device_id: string
+          diagnosis: string | null
+          folio: number
+          id: string
+          priority: Database["public"]["Enums"]["repair_priority"]
+          promised_at: string | null
+          public_code: string
+          quoted_amount: number | null
+          ready_at: string | null
+          reported_issue: string
+          status: Database["public"]["Enums"]["repair_status"]
+          tenant_id: string
+          updated_at: string
+          work_notes: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          assigned_to?: string | null
+          branch_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id: string
+          device_id: string
+          diagnosis?: string | null
+          folio: number
+          id?: string
+          priority?: Database["public"]["Enums"]["repair_priority"]
+          promised_at?: string | null
+          public_code: string
+          quoted_amount?: number | null
+          ready_at?: string | null
+          reported_issue: string
+          status?: Database["public"]["Enums"]["repair_status"]
+          tenant_id: string
+          updated_at?: string
+          work_notes?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          assigned_to?: string | null
+          branch_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string
+          device_id?: string
+          diagnosis?: string | null
+          folio?: number
+          id?: string
+          priority?: Database["public"]["Enums"]["repair_priority"]
+          promised_at?: string | null
+          public_code?: string
+          quoted_amount?: number | null
+          ready_at?: string | null
+          reported_issue?: string
+          status?: Database["public"]["Enums"]["repair_status"]
+          tenant_id?: string
+          updated_at?: string
+          work_notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "repair_orders_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "repair_orders_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "repair_orders_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "repair_orders_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      repair_status_history: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          from_status: Database["public"]["Enums"]["repair_status"] | null
+          id: string
+          note: string | null
+          repair_order_id: string
+          tenant_id: string
+          to_status: Database["public"]["Enums"]["repair_status"]
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          from_status?: Database["public"]["Enums"]["repair_status"] | null
+          id?: string
+          note?: string | null
+          repair_order_id: string
+          tenant_id: string
+          to_status: Database["public"]["Enums"]["repair_status"]
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          from_status?: Database["public"]["Enums"]["repair_status"] | null
+          id?: string
+          note?: string | null
+          repair_order_id?: string
+          tenant_id?: string
+          to_status?: Database["public"]["Enums"]["repair_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "repair_status_history_repair_order_id_fkey"
+            columns: ["repair_order_id"]
+            isOneToOne: false
+            referencedRelation: "repair_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "repair_status_history_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       role_permissions: {
         Row: {
@@ -399,6 +665,15 @@ export type Database = {
         | "ACCOUNTING"
         | "VIEWER"
       membership_status: "ACTIVE" | "INVITED" | "SUSPENDED"
+      repair_priority: "NORMAL" | "ALTA" | "URGENTE"
+      repair_status:
+        | "RECEPCION"
+        | "DIAGNOSTICO"
+        | "COTIZACION"
+        | "APROBACION"
+        | "REPARACION"
+        | "PRUEBAS"
+        | "READY"
       tenant_status: "ACTIVE" | "TRIAL" | "SUSPENDED" | "CANCELLED"
     }
     CompositeTypes: {
@@ -537,6 +812,16 @@ export const Constants = {
         "VIEWER",
       ],
       membership_status: ["ACTIVE", "INVITED", "SUSPENDED"],
+      repair_priority: ["NORMAL", "ALTA", "URGENTE"],
+      repair_status: [
+        "RECEPCION",
+        "DIAGNOSTICO",
+        "COTIZACION",
+        "APROBACION",
+        "REPARACION",
+        "PRUEBAS",
+        "READY",
+      ],
       tenant_status: ["ACTIVE", "TRIAL", "SUSPENDED", "CANCELLED"],
     },
   },
