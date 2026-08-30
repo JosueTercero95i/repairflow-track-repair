@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import type { TablesUpdate } from "@/integrations/supabase/types";
 
 export type RepairStatus =
   | "RECEPCION"
@@ -231,7 +232,7 @@ export function useCreateRepairOrder() {
 export function useUpdateRepairOrder(orderId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (patch: Record<string, unknown>) => {
+    mutationFn: async (patch: TablesUpdate<"repair_orders">) => {
       const { error } = await supabase.from("repair_orders").update(patch).eq("id", orderId);
       if (error) throw error;
     },
