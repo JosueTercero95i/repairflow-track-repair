@@ -34,10 +34,10 @@ const KPIS = [
 function DashboardPage() {
   return (
     <WorkspaceGate>
-      {({ membership }) => (
+      {({ membership, permissions }) => (
         <AppShell
           membership={membership}
-          permissions={[]}
+          permissions={permissions}
           title="Panel"
           description={`${membership.tenant.name} · ${membership.role.name}`}
           actions={<StatusBadge status={membership.tenant.status} />}
