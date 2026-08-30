@@ -52,13 +52,13 @@ function OnboardingPage() {
 
   async function handleCreate() {
     setLoading(true);
-    const { data, error } = await supabase.rpc("create_tenant_with_owner", {
+    const { error } = await supabase.rpc("create_tenant_with_owner", {
       _name: form.name,
       _slug: slug,
-      _legal_name: form.legalName || null,
-      _phone: form.phone || null,
-      _email: form.email || user?.email || null,
-      _tax_id: form.taxId || null,
+      _legal_name: form.legalName || undefined,
+      _phone: form.phone || undefined,
+      _email: form.email || user?.email || undefined,
+      _tax_id: form.taxId || undefined,
       _branch_name: form.branchName,
       _currency: form.currency,
     });
