@@ -52,16 +52,28 @@ function OnboardingPage() {
 
   async function handleCreate() {
     setLoading(true);
-    const { data, error } = await supabase.rpc("create_tenant_with_owner", {
+    const args: {
+      _name: string;
+      _slug: string;
+      _branch_name: string;
+      _currency: string;
+      _legal_name?: string;
+      _phone?: string;
+      _email?: string;
+      _tax_id?: string;
+    } = {
       _name: form.name,
       _slug: slug,
-      _legal_name: form.legalName || null,
-      _phone: form.phone || null,
-      _email: form.email || user?.email || null,
-      _tax_id: form.taxId || null,
       _branch_name: form.branchName,
       _currency: form.currency,
-    });
+    };
+    if (form.legalName) args._legal_name = form.legalName;
+    if (form.phone) args._phone = form.phone;
+    const email = form.email || user?.email;
+    if (email) args._email = email;
+    if (form.taxId) args._tax_id = form.taxId;
+
+    const { error } = await supabase.rpc("create_tenant_with_owner", args);
     setLoading(false);
 
     if (error) {
@@ -75,7 +87,7 @@ function OnboardingPage() {
 
     await queryClient.invalidateQueries({ queryKey: ["workspace"] });
     toast.success("Taller creado. ¡Bienvenido a RepairFlow!");
-    void navigate({ to: "/dashboard", search: { created: String(data ?? "") } });
+    void navigate({ to: "/dashboard" });
   }
 
   const canContinue = step === 0 ? form.name.trim().length > 1 && slug.length > 1 : true;
